@@ -1,0 +1,252 @@
+{
+  "course": { "id": "eng-a1", "title": "Англи хэл — Анхан шат" },
+  "user": { "name": "Болд", "avatarUrl": null },
+  "units": [
+    {
+      "id": "u1",
+      "title": "Танилцах",
+      "lessons": [
+        {
+          "id": "u1-l1",
+          "title": "Мэндчилгээ",
+          "description": "Англиар хэрхэн мэндэлж, салах ёс гүйцэтгэхийг сурна. Өглөө, өдөр, оройн мэндчилгээг ялгаж хэрэглэнэ.",
+          "videoUrl": "https://media.w3.org/2010/05/sintel/trailer.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4",
+          "durationSec": 52
+        },
+        {
+          "id": "u1-l2",
+          "title": "Өөрийгөө танилцуулах",
+          "description": "Нэр, нас, хаанаас ирснээ англиар хэлж сурна. Шинэ хүнтэй яриа эхлүүлэх энгийн өгүүлбэрүүдийг дадлагажуулна.",
+          "videoUrl": "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4",
+          "fallbackUrl": "https://storage.googleapis.com/exoplayer-test-media-1/mp4/android-screens-10s.mp4",
+          "durationSec": 10
+        },
+        {
+          "id": "u1-l3",
+          "title": "Цагаан толгой",
+          "description": "Англи цагаан толгойн 26 үсгийн нэр, дуудлагыг сурна. Нэрээ үсэглэн хэлдэг болно.",
+          "videoUrl": "https://test-videos.co.uk/vids/jellyfish/mp4/h264/360/Jellyfish_360_10s_1MB.mp4",
+          "fallbackUrl": "https://download.samplelib.com/mp4/sample-10s.mp4",
+          "durationSec": 10
+        },
+        {
+          "id": "u1-l4",
+          "title": "Тоо 1–10",
+          "description": "Нэгээс арав хүртэлх тоог англиар зөв дуудаж сурна. Нас, утасны дугаараа хэлэхдээ эдгээр тоог ашиглана.",
+          "videoUrl": "https://media.w3.org/2010/05/bunny/trailer.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
+          "durationSec": 33
+        },
+        {
+          "id": "u1-l5",
+          "title": "Өнгө",
+          "description": "Үндсэн өнгөнүүдийн нэрийг англиар сурна. Эргэн тойрныхоо зүйлсийг өнгөөр нь дүрсэлж сурна.",
+          "videoUrl": "https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4",
+          "fallbackUrl": "https://storage.googleapis.com/exoplayer-test-media-1/mp4/android-screens-10s.mp4",
+          "durationSec": 10
+        }
+      ],
+      "quiz": {
+        "id": "u1-quiz",
+        "passPercent": 60,
+        "questions": [
+          {
+            "id": "u1-q1",
+            "text": "\"Hello\" гэдэг ямар утгатай вэ?",
+            "options": ["Сайн уу", "Баяртай", "Баярлалаа"],
+            "answerIndex": 0
+          },
+          {
+            "id": "u1-q2",
+            "text": "\"My name is Bold\" гэдэг ямар утгатай вэ?",
+            "options": ["Би Болдыг таньдаг", "Намайг Болд гэдэг", "Болд хаана байна?"],
+            "answerIndex": 1
+          },
+          {
+            "id": "u1-q3",
+            "text": "Англи цагаан толгойд хэдэн үсэг байдаг вэ?",
+            "options": ["24 үсэг", "35 үсэг", "26 үсэг"],
+            "answerIndex": 2
+          },
+          {
+            "id": "u1-q4",
+            "text": "\"Seven\" гэдэг ямар тоо вэ?",
+            "options": ["Тав", "Долоо", "Найм"],
+            "answerIndex": 1
+          },
+          {
+            "id": "u1-q5",
+            "text": "\"Blue\" гэдэг ямар өнгө вэ?",
+            "options": ["Цэнхэр", "Улаан", "Шар"],
+            "answerIndex": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "u2",
+      "title": "Өдөр тутам",
+      "lessons": [
+        {
+          "id": "u2-l1",
+          "title": "Гэр бүл",
+          "description": "Гэр бүлийн гишүүдийг англиар нэрлэж сурна. Аав, ээж, ах дүүгийнхээ тухай энгийн өгүүлбэрээр ярина.",
+          "videoUrl": "https://media.w3.org/2010/05/bunny/trailer.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
+          "durationSec": 33
+        },
+        {
+          "id": "u2-l2",
+          "title": "Хоол хүнс",
+          "description": "Өдөр тутмын хоол хүнсний нэрсийг сурна. Ямар хоолонд дуртайгаа англиар хэлж сурна.",
+          "videoUrl": "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4",
+          "fallbackUrl": "https://download.samplelib.com/mp4/sample-10s.mp4",
+          "durationSec": 10
+        },
+        {
+          "id": "u2-l3",
+          "title": "Цаг",
+          "description": "Цаг хэд болж байгааг англиар асууж, хариулж сурна. Өдрийн хуваариа ярихдаа цагийг зөв хэрэглэнэ.",
+          "videoUrl": "https://storage.googleapis.com/exoplayer-test-media-1/mp4/android-screens-10s.mp4",
+          "fallbackUrl": "https://test-videos.co.uk/vids/jellyfish/mp4/h264/360/Jellyfish_360_10s_1MB.mp4",
+          "durationSec": 10
+        },
+        {
+          "id": "u2-l4",
+          "title": "Гарагууд",
+          "description": "Долоо хоногийн гарагуудын нэрийг англиар сурна. Төлөвлөгөөгөө ярихдаа гарагийг зөв хэрэглэнэ.",
+          "videoUrl": "https://media.w3.org/2010/05/sintel/trailer.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4",
+          "durationSec": 52
+        },
+        {
+          "id": "u2-l5",
+          "title": "Хувцас",
+          "description": "Өдөр тутмын хувцасны нэрсийг сурна. Юу өмссөнөө англиар хэлж сурна.",
+          "videoUrl": "https://test-videos.co.uk/vids/jellyfish/mp4/h264/360/Jellyfish_360_10s_1MB.mp4",
+          "fallbackUrl": "https://storage.googleapis.com/exoplayer-test-media-1/mp4/android-screens-10s.mp4",
+          "durationSec": 10
+        }
+      ],
+      "quiz": {
+        "id": "u2-quiz",
+        "passPercent": 60,
+        "questions": [
+          {
+            "id": "u2-q1",
+            "text": "\"Mother\" гэдэг ямар утгатай вэ?",
+            "options": ["Аав", "Ээж", "Эгч"],
+            "answerIndex": 1
+          },
+          {
+            "id": "u2-q2",
+            "text": "\"Bread\" гэдэг ямар утгатай вэ?",
+            "options": ["Талх", "Сүү", "Мах"],
+            "answerIndex": 0
+          },
+          {
+            "id": "u2-q3",
+            "text": "\"What time is it?\" гэдэг ямар утгатай вэ?",
+            "options": ["Чи хаана байна?", "Өнөөдөр ямар гараг вэ?", "Цаг хэд болж байна?"],
+            "answerIndex": 2
+          },
+          {
+            "id": "u2-q4",
+            "text": "\"Monday\" гэдэг ямар гараг вэ?",
+            "options": ["Мягмар", "Ням", "Даваа"],
+            "answerIndex": 2
+          },
+          {
+            "id": "u2-q5",
+            "text": "\"Shoes\" гэдэг ямар утгатай вэ?",
+            "options": ["Гутал", "Малгай", "Цамц"],
+            "answerIndex": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "u3",
+      "title": "Аялал",
+      "lessons": [
+        {
+          "id": "u3-l1",
+          "title": "Чиглэл",
+          "description": "Англиар зам асууж, чиглэл тайлбарлаж сурна. Баруун, зүүн, чигээрээ гэх үгсийг зөв хэрэглэнэ.",
+          "videoUrl": "https://media.w3.org/2010/05/bunny/trailer.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
+          "durationSec": 33
+        },
+        {
+          "id": "u3-l2",
+          "title": "Тээвэр",
+          "description": "Автобус, галт тэрэг, онгоц зэрэг тээврийн хэрэгслийн нэрсийг сурна. Тасалбар авахад хэрэгтэй энгийн хэллэгүүдийг дадлагажуулна.",
+          "videoUrl": "https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4",
+          "fallbackUrl": "https://download.samplelib.com/mp4/sample-10s.mp4",
+          "durationSec": 10
+        },
+        {
+          "id": "u3-l3",
+          "title": "Зочид буудал",
+          "description": "Зочид буудалд өрөө захиалж, бүртгүүлэхэд хэрэгтэй хэллэгүүдийг сурна. Үйлчилгээний талаар англиар асууж сурна.",
+          "videoUrl": "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4",
+          "fallbackUrl": "https://storage.googleapis.com/exoplayer-test-media-1/mp4/android-screens-10s.mp4",
+          "durationSec": 10
+        },
+        {
+          "id": "u3-l4",
+          "title": "Дэлгүүр",
+          "description": "Дэлгүүрт үнэ асууж, худалдан авалт хийхэд хэрэгтэй үгсийг сурна. Худалдагчтай энгийн яриа өрнүүлнэ.",
+          "videoUrl": "https://media.w3.org/2010/05/sintel/trailer.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4",
+          "durationSec": 52
+        },
+        {
+          "id": "u3-l5",
+          "title": "Цаг агаар",
+          "description": "Цаг агаарын тухай англиар ярьж сурна. Халуун, хүйтэн, бороотой зэрэг үгсээр өнөөдрийн цаг агаарыг дүрсэлнэ.",
+          "videoUrl": "https://download.samplelib.com/mp4/sample-10s.mp4",
+          "fallbackUrl": "https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4",
+          "durationSec": 10
+        }
+      ],
+      "quiz": {
+        "id": "u3-quiz",
+        "passPercent": 60,
+        "questions": [
+          {
+            "id": "u3-q1",
+            "text": "\"Turn left\" гэдэг ямар утгатай вэ?",
+            "options": ["Баруун тийш эргэ", "Зүүн тийш эргэ", "Чигээрээ яв"],
+            "answerIndex": 1
+          },
+          {
+            "id": "u3-q2",
+            "text": "\"Train\" гэдэг ямар утгатай вэ?",
+            "options": ["Онгоц", "Автобус", "Галт тэрэг"],
+            "answerIndex": 2
+          },
+          {
+            "id": "u3-q3",
+            "text": "\"Room key\" гэдэг ямар утгатай вэ?",
+            "options": ["Өрөөний түлхүүр", "Өрөөний дугаар", "Орны даавуу"],
+            "answerIndex": 0
+          },
+          {
+            "id": "u3-q4",
+            "text": "\"How much is it?\" гэдэг ямар утгатай вэ?",
+            "options": ["Энэ хаана байна?", "Энэ ямар үнэтэй вэ?", "Энэ юу вэ?"],
+            "answerIndex": 1
+          },
+          {
+            "id": "u3-q5",
+            "text": "\"It is raining\" гэдэг ямар утгатай вэ?",
+            "options": ["Цас орж байна", "Нартай байна", "Бороо орж байна"],
+            "answerIndex": 2
+          }
+        ]
+      }
+    }
+  ]
+}
