@@ -1,41 +1,199 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+# OctoLearn mobile: agent guide
 
-## Expo has changed — do not trust your training data
+Expo SDK 58 / React Native 0.88 / React 19.3 prototype of a Duolingo-style video course app.
+No backend: content is bundled JSON, progress lives in AsyncStorage. UI copy is Mongolian, code and
+comments are English.
 
-Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+## Expo has changed: do not trust your training data
 
-1. Read the major version of the `expo` package in `package.json`.
-2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+Expo ships breaking changes every SDK release. Before writing code that touches an Expo, EAS or
+React Native API, check the installed types in `node_modules/<package>/build/*.d.ts` or fetch
+`https://docs.expo.dev/versions/v58.0.0/`. Never answer from memory.
 
 ## Commands
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
-
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+yarn check            # typecheck + lint + jest. Run before declaring a task done
+yarn typecheck        # tsc --noEmit
+yarn lint             # expo lint (add --fix through: yarn expo lint --fix)
+yarn test             # jest (domain tests only)
+yarn check:videos     # checks every video URL in course.json
+yarn start            # dev server (Expo Go)
 ```
 
-Run lint and typecheck before declaring any task done.
+Never use the global `expo` binary (deprecated). Never use the `@expo/vector-icons` root import for
+anything but `Ionicons` inside `src/components/Icon.tsx`. Only the orchestrator adds dependencies
+(`yarn expo install`), and only the orchestrator commits.
 
-## Navigation & Routing
+## Layout
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
+```
+src/app/                 Routes only. Screens compose components and hooks.
+src/content/             course.json + typed `content` export
+src/domain/              Pure TypeScript. No react, react-native or expo imports. Fully unit-tested.
+src/store/               useProgressStore (zustand + persist) and useHydrated
+src/hooks/               React glue over the store and the player
+src/components/          Flat folder of shared UI
+src/theme/index.ts       Design tokens (frozen)
+src/i18n/mn.ts           All UI copy
+src/lib/                 haptics, format helpers
+```
 
-## Building with EAS
+## Hard rules
 
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
+- **Tokens only.** No hard-coded colours, font sizes or radii outside `src/theme`. Layout numbers
+  that are not design tokens (a chart height, a zigzag amplitude) get a named constant.
+- **Copy only through `mn`** from `@/i18n/mn`. No Mongolian literals in components or screens. If a
+  string is missing, add it to the matching section of `src/i18n/mn.ts` with a small edit.
+- **Text goes through `AppText`** so font family, scaling cap and Android padding stay consistent.
+- **Never set `fontWeight`.** Android ignores it on custom fonts. `type` tokens set `fontFamily`.
+- **Text in a brand colour uses `primaryDark`**, never `primary`. No text on `coral` or `gold` fills.
+- **Tap targets are at least 48** (`size.tap`). Use `hitSlop` for small icons.
+- **Safe area:** `SafeAreaView` from `react-native-safe-area-context` with explicit `edges`, always
+  including `left` and `right`. Stacked screens handle the bottom through `BottomBar`. Android is
+  edge-to-edge, so insets matter there too.
+- **No `Intl`** (Hermes locale data is unreliable). Format dates and numbers by hand.
+- **Zustand selectors never build objects or arrays.** That causes an infinite render loop in v5.
+  Select `s.progress`, then derive with `useMemo`. The hooks in `src/hooks/useProgress.ts` do this.
+- **Reanimated in React code:** use `sv.get()` and `sv.set()`, not `.value` (React Compiler
+  compatibility). Honour `useReducedMotion()` for looping or decorative motion.
+- **Do not use `https://commondatastorage.googleapis.com/gtv-videos-bucket/...`.** It returns 403.
+- **Domain functions never mutate.** When nothing changes they return the same object reference.
+- Keep it simple. No extra abstractions, no speculative options, no new dependencies.
 
-## Rules
+## Rules of the course (source of truth for the code)
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- Ordered node list: u1-l1 … u1-l5, u1-quiz, u2-l1 … A lesson is done when its id is in
+  `completedLessons`. A quiz is done when `passedOn` is set. **Active** is the first node that is
+  not done. Done nodes are `completed`, the rest are `locked`. A unit is `completed` when all its
+  nodes are done, `active` when it contains the active node, otherwise `locked`.
+- XP: lesson +10 on first completion, quiz +20 on first pass, otherwise 0. XP is derived from
+  progress, never stored. Maximum 210.
+- Pass: `correct * 100 >= passPercent * total` (integer maths, 3/5 passes). Missing answers count as
+  wrong. A failed retake never removes a pass. Retakes update attempts, best and last percent.
+- Level: `floor(xp / 50) + 1`.
+- Streak: a day is active when its XP is above 0. Count back from today, or from yesterday when today
+  is not active yet. A gap ends the count. Nothing recent means 0.
+- Watch rule: play ticks arrive every 0.5 s. A tick counts only when it is at most 1.5 s after the
+  previous one, so seeks add nothing. Finish enables at `watchedSec / duration >= 0.9` or on
+  `playToEnd`, and stays enabled. A lesson that is already completed can finish at once for 0 XP.
+- Course percent counts lessons. `isComplete` needs every lesson and quiz done.
+- Reset wipes progress and user, which returns the app to the login screen.
+
+## Domain API (`src/domain`, types in `types.ts`)
+
+```ts
+// constants.ts
+XP_PER_LESSON = 10; XP_PER_QUIZ_PASS = 20; XP_PER_LEVEL = 50; WATCH_THRESHOLD = 0.9;
+WATCH_TICK_SEC = 0.5; WATCH_MAX_GAP_SEC = 1.5;
+
+// date.ts
+toDayKey(date: Date): DayKey                // local time, zero padded
+addDays(day: DayKey, delta: number): DayKey // from date parts, DST safe
+lastNDays(today: DayKey, n: number): DayKey[] // oldest first
+weekdayIndexMon0(day: DayKey): number       // 0 = Monday
+
+// path.ts
+listNodes(content): Omit<PathNode, 'status'>[]
+isNodeDone(progress, node: { kind: NodeKind; id: string }): boolean
+buildPath(content, progress): CoursePath
+getNodeStatus(content, progress, nodeId): NodeStatus | null   // null = unknown id
+getLessonLocation(content, lessonId): LessonLocation | null   // 1-based numbers
+findQuiz(content, quizId): QuizLocation | null
+
+// stats.ts
+getTotalXp(content, progress): number       // only counts ids that exist in content
+getXpByDay(content, progress): Record<DayKey, number>
+getLevel(xp): LevelInfo
+getStreak(xpByDay, today): StreakInfo
+getWeeklyActivity(xpByDay, today): DayActivity[]              // 7 items, today last
+getCourseProgress(content, progress): CourseProgress
+getProfileStats(content, progress, today): ProfileStats
+getInitial(name): string                    // first grapheme, uppercased, '?' when empty
+
+// progress.ts
+EMPTY_PROGRESS: Progress; PERSIST_VERSION = 1;
+applyLessonCompleted(content, progress, lessonId, today): Progress   // no-op if locked or done
+scoreQuiz(quiz, answers: number[]): QuizScore
+applyQuizSubmitted(content, progress, quiz, answers, today): { progress: Progress; score: QuizScore }
+                                                                     // no-op if the quiz is locked
+summarizeChange(content, before: Progress, after: Progress): ChangeSummary
+migratePersistedState(persisted: unknown, fromVersion: number): PersistedState
+
+// quizSession.ts
+initialQuizSession: QuizSession
+quizSessionReducer(state, action: QuizSessionAction): QuizSession
+// select: ignored once checked. check: no-op without a selection, records the answer.
+// next: no-op before check, advances and clears selection.
+
+// watch.ts
+INITIAL_WATCH: WatchState
+accumulateWatched(state: WatchState, currentTime: number): WatchState
+isWatchThresholdReached(state: WatchState, duration: number): boolean // false for 0 or NaN duration
+```
+
+## Store and hooks
+
+```ts
+// src/store/progressStore.ts
+useProgressStore: state = PersistedState & {
+  signIn(name: string): void;              // trims; empty falls back to content.user.name; sets joinedOn
+  completeLesson(lessonId: string): ChangeSummary;
+  submitQuiz(quizId: string, answers: number[]): QuizScore & ChangeSummary;
+  reset(): void;                           // user = null, progress = EMPTY_PROGRESS
+}
+useHydrated(): boolean
+
+// src/hooks/useProgress.ts
+usePath(): CoursePath
+useStats(): ProfileStats
+useNodeStatus(id: string): NodeStatus | null
+```
+
+Actions return what the calling screen needs for feedback. Home animates by comparing values.
+
+## Routes
+
+Files live under `src/app/`. Every stacked screen sets its own header through `ScreenHeader`.
+
+| Route | File | Notes |
+|---|---|---|
+| `/login` | `login.tsx` | Only reachable when signed out |
+| `/` | `(tabs)/index.tsx` | Pathway |
+| `/profile` | `(tabs)/profile.tsx` | |
+| `/lesson/[id]` | `lesson/[id]/index.tsx` | Pushed from Home |
+| `/lesson/[id]/done` | `lesson/[id]/done.tsx` | `router.replace` with params `xp`, `next` (`lesson`\|`quiz`\|`none`), `level` (new level, or empty) |
+| `/quiz/[id]` | `quiz/[id]/index.tsx` | Pushed from Home |
+| `/quiz/[id]/result` | `quiz/[id]/result.tsx` | `router.replace` with params `correct`, `total`, `percent`, `passed` (`1`\|`0`), `xp`, `unlockedUnit` (number or empty), `courseCompleted` (`1`\|`0`) |
+
+The root layout owns `Stack.Protected`, so signing in or resetting navigates by itself. Continue on a
+success screen is `router.back()`, which lands on the tabs because the screen was reached by replace.
+
+## UI kit (`src/components`, default to named exports)
+
+The visual language: **tappables are chunky**. Button, PathNode and OptionCard have a 4 px darker
+bottom edge (`size.edge`) and the face sinks 4 px when pressed, through the Pressable `pressed` state.
+**Static cards are flat:** `surface` fill, 2 px `border`, no shadow.
+
+| Component | Props | Behaviour |
+|---|---|---|
+| `AppText` | `variant: TypeVariant`, `color?`, `align?`, `numberOfLines?`, `style?`, `maxFontSizeMultiplier?` | Default variant `body`, colour `text`. Defaults `maxFontSizeMultiplier` 1.3, `includeFontPadding: false` |
+| `Icon` | `name`, `size?`, `color?` | Only file importing Ionicons. Export the name type |
+| `Button` | `label`, `onPress`, `variant?: primary\|outline\|ghost\|danger`, `disabled?`, `loading?`, `icon?` | Full width, face `size.btn` high plus edge. Disabled: `locked` face, `textMuted` label, no edge. One-line label with `adjustsFontSizeToFit`. `danger` is an outline in `dangerDark` |
+| `Pill` | `tone: primary\|coral\|gold\|success`, `icon?`, `label`, `bumpKey?`, `accessibilityLabel?` | 36 high, tint background, dark text. Scale bump when `bumpKey` changes |
+| `ProgressBar` | `value` 0..1, `color?`, `height?` (14) | Animated width with `withTiming` (`motion.slow`), `border` track, soft highlight strip on the fill |
+| `PathNode` | `status`, `kind`, `bubbleSide?: left\|right`, `celebrate?`, `onPress`, `onLockedPress`, `accessibilityLabel` | Chunky coin, `size.node` (quiz `size.quizNode`). Completed: `primary` + check. Active lesson: white face, `primary` ring + play icon + expanding halo pulse + ink "Эхлэх ›" bubble on `bubbleSide`. Locked: `locked` + lock icon. Quiz: gold star when active or completed. Locked press shakes then calls `onLockedPress`. Pops when `celebrate` turns true |
+| `UnitHeader` | `index`, `title`, `locked?` | Unlocked: `primary` banner, white micro eyebrow and headline title. Locked: flat card, muted text, lock icon, `mn.home.unitLocked` caption |
+| `OptionCard` | `label`, `state: idle\|selected\|correct\|wrong\|dim`, `onPress`, `disabled?` | Chunky, min height 56. Selected: `primary` border + `primaryTint`. Correct: success + check icon + bump. Wrong: danger + close icon + shake. Dim: 50% opacity |
+| `StatCard` | `icon`, `tone`, `value`, `label` | Flat card. Icon in tinted 36 circle, `h1` value, label up to 2 lines |
+| `Avatar` | `name`, `uri?`, `size?` | Image, or initial from `getInitial` on a `primaryTint` circle with `primaryDark` text |
+| `WeeklyChart` | `days: DayActivity[]` | Seven flex columns of plain Views. Height = xp / max × chart height, minimum 4 px stub. Today: `primary` bar and bold label. Others: `primaryTint`. Labels from `mn.profile.weekdays[weekdayIndex]` |
+| `Confetti` | `count?` (26) | Reanimated burst from top-centre on mount. One shared progress drives each piece: `x = vx·s`, `y = vy·s + 700·s²`, spin, fade after 75%. `pointerEvents="none"`. Renders nothing under reduced motion |
+| `ScreenHeader` | `left: back\|close`, `onLeft`, `title?`, `children?` | 56 high. 44×44 icon button. Centre holds title or children |
+| `BottomBar` | `children`, `hint?` | Sticky action area. `paddingBottom: max(insets.bottom, space.lg)`, surface, hairline top border, optional caption hint above children |
+| `StateView` | `kind: loading\|error\|empty`, `title?`, `message?`, `actionLabel?`, `onAction?`, `dark?`, `icon?` | Centred spinner or icon, text, optional Button. `dark` is the variant inside the black video box |
+| `Toast` | `message`, `showKey`, `duration?` (2200), `bottom?` | Owned by each screen. Ink background, white text, `FadeInDown` / `FadeOutDown`, hides itself. `showKey` of 0 renders nothing |
+| `Celebration` | `icon`, `iconBg`, `iconEdge`, `iconColor`, `title`, `subtitle?`, `xp?`, `confetti?`, `primary: {label, onPress}`, `secondary?: {label, onPress}`, `extra?` | Shared layout for success screens. Circle `ZoomIn.springify()`, title `FadeInDown`, XP pill, buttons in `BottomBar` stacked with the outline above the primary. Circle 128, or 96 when the window height is under 700 |
+
+Also `src/lib/haptics.ts` (`tap`, `select`, `success`, `error`, `warn`, fire-and-forget, using
+`performAndroidHapticsAsync` on Android) and `src/lib/format.ts` (`formatDuration(80)` returns `1:20`).
