@@ -40,8 +40,8 @@ const LOOKS: Record<Variant, Look> = {
   ghost: { face: 'transparent', pressedFace: colors.primaryTint, label: colors.primaryDark },
   danger: {
     face: colors.surface,
-    edge: colors.dangerDark,
-    border: colors.dangerDark,
+    edge: colors.borderStrong,
+    border: colors.borderStrong,
     label: colors.dangerDark,
   },
 };

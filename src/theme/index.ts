@@ -12,6 +12,8 @@ export const colors = {
   primary: '#0E7C9B',
   primaryDark: '#0A5F78',
   primaryTint: '#E3F4F8',
+  /** Decorative mid-tone: past days on the activity chart. */
+  primaryMid: '#8CCBDD',
   coral: '#FF6B4A',
   coralDark: '#E0502F',
   coralTint: '#FFEDE6',

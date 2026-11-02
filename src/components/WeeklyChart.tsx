@@ -15,6 +15,11 @@ interface WeeklyChartProps {
   days: DayActivity[];
 }
 
+function barColor(day: DayActivity): string {
+  if (day.isToday) return colors.primary;
+  return day.xp > 0 ? colors.primaryMid : colors.borderStrong;
+}
+
 export function WeeklyChart({ days }: WeeklyChartProps) {
   // Floor of 1 keeps an all-zero week from dividing by zero: every bar is then a stub.
   const maxXp = Math.max(1, ...days.map((d) => d.xp));
@@ -38,7 +43,7 @@ export function WeeklyChart({ days }: WeeklyChartProps) {
                   styles.bar,
                   {
                     height: barHeight,
-                    backgroundColor: d.isToday ? colors.primary : colors.primaryTint,
+                    backgroundColor: barColor(d),
                   },
                 ]}
               />

@@ -25,6 +25,8 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        // The bar has a fixed height, so scaled labels would be clipped.
+        tabBarAllowFontScaling: false,
         tabBarActiveTintColor: ACTIVE_TINT,
         tabBarInactiveTintColor: INACTIVE_TINT,
         tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border },
