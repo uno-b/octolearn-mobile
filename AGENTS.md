@@ -109,7 +109,8 @@ getStreak(xpByDay, today): StreakInfo
 getWeeklyActivity(xpByDay, today): DayActivity[]              // 7 items, today last
 getCourseProgress(content, progress): CourseProgress
 getProfileStats(content, progress, today): ProfileStats
-getInitial(name): string                    // first grapheme, uppercased, '?' when empty
+getInitial(name): string                    // first code point, uppercased, '?' when empty
+toPercent(part, total): number              // rounded integer, 0 when total is 0
 
 // progress.ts
 EMPTY_PROGRESS: Progress; PERSIST_VERSION = 1;
@@ -195,5 +196,16 @@ bottom edge (`size.edge`) and the face sinks 4 px when pressed, through the Pres
 | `Toast` | `message`, `showKey`, `duration?` (2200), `bottom?` | Owned by each screen. Ink background, white text, `FadeInDown` / `FadeOutDown`, hides itself. `showKey` of 0 renders nothing |
 | `Celebration` | `icon`, `iconBg`, `iconEdge`, `iconColor`, `title`, `subtitle?`, `xp?`, `confetti?`, `primary: {label, onPress}`, `secondary?: {label, onPress}`, `extra?` | Shared layout for success screens. Circle `ZoomIn.springify()`, title `FadeInDown`, XP pill, buttons in `BottomBar` stacked with the outline above the primary. Circle 128, or 96 when the window height is under 700 |
 
+Shared internals: `ChunkyFace` is the edge and sinking face used by Button, OptionCard, PathNode and
+Celebration. `useFeedbackMotion()` in `src/lib/feedbackMotion.ts` returns a transform `style` plus
+one-shot `bump()` and `shake()`.
+
 Also `src/lib/haptics.ts` (`tap`, `select`, `success`, `error`, `warn`, fire-and-forget, using
 `performAndroidHapticsAsync` on Android) and `src/lib/format.ts` (`formatDuration(80)` returns `1:20`).
+
+Usage notes:
+
+- `PathNode` shows the start bubble only when it is active **and** `bubbleSide` is passed.
+- `Toast` needs a new non-zero `showKey` each time, and an absolutely positionable parent.
+- `StatCard.value` is a string and the card is `flex: 1`, so it expects a row parent.
+- `AppText` also accepts React Native `TextProps`.
