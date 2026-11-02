@@ -30,7 +30,7 @@ export const mn = {
     unitLocked: 'Өмнөх бүлгийн шалгалтад тэнцээд нээгдэнэ',
     lockedToast: 'Өмнөх хичээлээ эхлээд дуусгана уу',
     lockedQuizToast: 'Бүлгийн 5 хичээлээ дуусгаад шалгалт өгнө үү',
-    courseDoneTitle: 'Курс дууслаа 🎉',
+    courseDoneTitle: 'Курс дууслаа!',
     courseDoneSub: 'Та бүх хичээл, шалгалтаа амжилттай дуусгалаа!',
   },
   a11y: {
