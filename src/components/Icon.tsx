@@ -5,6 +5,9 @@ import { colors, size } from '@/theme';
 
 export type IconName = ComponentProps<typeof Ionicons>['name'];
 
+/** Loaded with the app fonts, so icons never flash in on first render. */
+export const iconFonts = Ionicons.font;
+
 interface IconProps {
   name: IconName;
   size?: number;
