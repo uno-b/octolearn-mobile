@@ -6,27 +6,15 @@ import { colors, motion, radius, size } from '@/theme';
 
 import { AppText } from './AppText';
 
-/** From this diameter up the initial uses the display type, below it the headline type. */
-const LARGE_AVATAR = 64;
-
 interface AvatarProps {
   name: string;
   uri?: string | null;
-  size?: number;
 }
 
-export function Avatar({ name, uri, size: diameter = size.avatar }: AvatarProps) {
+export function Avatar({ name, uri }: AvatarProps) {
   return (
-    <View
-      accessible
-      accessibilityRole="image"
-      accessibilityLabel={name}
-      style={[styles.circle, { width: diameter, height: diameter }]}
-    >
-      <AppText
-        variant={diameter >= LARGE_AVATAR ? 'display' : 'headline'}
-        color={colors.primaryDark}
-      >
+    <View accessible accessibilityRole="image" accessibilityLabel={name} style={styles.circle}>
+      <AppText variant="display" color={colors.primaryDark}>
         {getInitial(name)}
       </AppText>
       {/* Drawn over the initial, which stays visible while loading or if the image fails. */}
@@ -44,6 +32,8 @@ export function Avatar({ name, uri, size: diameter = size.avatar }: AvatarProps)
 
 const styles = StyleSheet.create({
   circle: {
+    width: size.avatar,
+    height: size.avatar,
     borderRadius: radius.pill,
     backgroundColor: colors.primaryTint,
     alignItems: 'center',

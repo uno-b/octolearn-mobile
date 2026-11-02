@@ -6,31 +6,23 @@ import { colors, radius, shadow, space } from '@/theme';
 
 import { AppText } from './AppText';
 
-const DEFAULT_DURATION_MS = 2200;
+const DURATION_MS = 2200;
 
 interface ToastProps {
   message: string;
   /** Show the toast by changing this to a new non-zero value. 0 keeps it hidden. */
   showKey: number;
-  duration?: number;
-  /** Distance from the bottom edge of the screen. */
-  bottom?: number;
 }
 
-export function Toast({
-  message,
-  showKey,
-  duration = DEFAULT_DURATION_MS,
-  bottom = space.xl,
-}: ToastProps) {
+export function Toast({ message, showKey }: ToastProps) {
   // The key whose timer has run out. A new showKey differs from it, so the toast shows again.
   const [dismissedKey, setDismissedKey] = useState(0);
 
   useEffect(() => {
     if (showKey === 0) return;
-    const timer = setTimeout(() => setDismissedKey(showKey), duration);
+    const timer = setTimeout(() => setDismissedKey(showKey), DURATION_MS);
     return () => clearTimeout(timer);
-  }, [showKey, duration]);
+  }, [showKey]);
 
   if (showKey === 0 || showKey === dismissedKey) return null;
 
@@ -41,7 +33,7 @@ export function Toast({
       pointerEvents="none"
       accessibilityRole="alert"
       accessibilityLiveRegion="polite"
-      style={[styles.toast, { bottom }]}
+      style={styles.toast}
     >
       <AppText variant="label" color={colors.surface} align="center">
         {message}
@@ -53,6 +45,7 @@ export function Toast({
 const styles = StyleSheet.create({
   toast: {
     position: 'absolute',
+    bottom: space.xl,
     left: space.lg,
     right: space.lg,
     paddingVertical: space.md,

@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StateView } from '@/components/StateView';
@@ -7,7 +8,7 @@ import { colors } from '@/theme';
 
 export default function NotFoundScreen() {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+    <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.screen}>
       <StateView
         kind="empty"
         title={mn.common.notFound}
@@ -17,3 +18,7 @@ export default function NotFoundScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: colors.bg },
+});

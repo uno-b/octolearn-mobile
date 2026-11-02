@@ -1,9 +1,7 @@
 /** All UI copy. Screens and components must not contain Mongolian literals. */
 export const mn = {
   common: {
-    appName: 'OctoLearn',
     continue: 'Үргэлжлүүлэх',
-    next: 'Дараах',
     retry: 'Дахин оролдох',
     cancel: 'Болих',
     back: 'Буцах',
@@ -13,9 +11,12 @@ export const mn = {
     notFound: 'Хуудас олдсонгүй',
     xpGain: (n: number) => `+${n} XP`,
     xp: (n: number) => `${n} XP`,
+    levelUp: (level: number) => `Шинэ түвшин: ${level}`,
   },
   tabs: { home: 'Нүүр', profile: 'Профайл' },
   login: {
+    brandFirst: 'Octo',
+    brandSecond: 'Learn',
     tagline: 'Англи хэлийг видеогоор, өдөр бүр бага багаар',
     nameLabel: 'Таны нэр',
     namePlaceholder: 'Нэрээ оруулна уу',
@@ -26,7 +27,6 @@ export const mn = {
       `Курсийн ахиц · ${done} / ${total} хичээл · ${percent}%`,
     start: 'Эхлэх',
     unitEyebrow: (n: number) => `БҮЛЭГ ${n}`,
-    unitSub: '5 хичээл · 1 шалгалт',
     unitLocked: 'Өмнөх бүлгийн шалгалтад тэнцээд нээгдэнэ',
     lockedToast: 'Өмнөх хичээлээ эхлээд дуусгана уу',
     lockedQuizToast: 'Бүлгийн 5 хичээлээ дуусгаад шалгалт өгнө үү',
@@ -38,7 +38,6 @@ export const mn = {
     active: 'Идэвхтэй',
     locked: 'Түгжээтэй',
     quiz: 'Шалгалт',
-    lesson: 'Хичээл',
     streak: (n: number) => `Streak ${n} өдөр`,
     xp: (n: number) => `Нийт ${n} XP`,
   },
@@ -54,7 +53,6 @@ export const mn = {
     doneTitle: 'Хичээл дууслаа!',
     doneNext: 'Дараагийн хичээл нээгдлээ',
     doneQuiz: 'Бүлгийн шалгалт нээгдлээ',
-    doneLevel: (level: number) => `Шинэ түвшин: ${level}`,
   },
   quiz: {
     progress: (index: number, total: number) => `Асуулт ${index} / ${total}`,
@@ -75,7 +73,6 @@ export const mn = {
     failSub: (percent: number, need: number) => `${percent}% · Тэнцэхэд ${need}% хэрэгтэй`,
     retake: 'Дахин өгөх',
     empty: 'Асуулт олдсонгүй',
-    lockedMessage: 'Бүлгийн 5 хичээлээ дуусгаад шалгалт өгнө үү',
   },
   profile: {
     levelSince: (level: number, year: string, month: number) =>

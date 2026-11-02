@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
-  cancelAnimation,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
@@ -164,7 +163,6 @@ function Halo({ diameter, color }: { diameter: number; color?: string }) {
   useEffect(() => {
     if (reduceMotion) return;
     pulse.set(withRepeat(withTiming(1, { duration: HALO_PERIOD_MS }), -1, false));
-    return () => cancelAnimation(pulse);
   }, [pulse, reduceMotion]);
 
   const style = useAnimatedStyle(() => ({

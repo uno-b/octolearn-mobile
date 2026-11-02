@@ -1,6 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { View } from 'react-native';
 
 import { Celebration } from '@/components/Celebration';
 import { Pill } from '@/components/Pill';
@@ -15,11 +14,6 @@ export default function LessonDoneScreen() {
     haptics.success();
   }, []);
 
-  const leave = () => {
-    if (router.canGoBack()) router.back();
-    else router.replace('/');
-  };
-
   return (
     <Celebration
       icon="checkmark"
@@ -30,15 +24,8 @@ export default function LessonDoneScreen() {
       subtitle={next === 'quiz' ? mn.lesson.doneQuiz : mn.lesson.doneNext}
       xp={Number(xp)}
       confetti
-      extra={
-        level ? (
-          // Pill aligns itself to flex-start, so a shrink-wrapped parent is what centres it here.
-          <View>
-            <Pill tone="gold" label={mn.lesson.doneLevel(Number(level))} />
-          </View>
-        ) : undefined
-      }
-      primary={{ label: mn.common.continue, onPress: leave }}
+      extra={level ? <Pill tone="gold" label={mn.common.levelUp(Number(level))} /> : undefined}
+      primary={{ label: mn.common.continue, onPress: () => router.back() }}
     />
   );
 }

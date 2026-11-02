@@ -12,7 +12,7 @@ import Animated, {
 import { colors } from '@/theme';
 
 const PALETTE = [colors.primary, colors.coral, colors.gold, colors.success];
-const DEFAULT_COUNT = 26;
+const PIECE_COUNT = 26;
 const DURATION_MS = 2400;
 /** Constant downward acceleration, in px per unit of progress squared. */
 const GRAVITY = 700;
@@ -36,8 +36,8 @@ interface Piece {
 
 const between = (min: number, max: number) => min + Math.random() * (max - min);
 
-function createPieces(count: number): Piece[] {
-  return Array.from({ length: count }, (_, i) => {
+function createPieces(): Piece[] {
+  return Array.from({ length: PIECE_COUNT }, (_, i) => {
     const width = between(PIECE_SIZE.min, PIECE_SIZE.max);
     return {
       color: PALETTE[i % PALETTE.length],
@@ -50,15 +50,11 @@ function createPieces(count: number): Piece[] {
   });
 }
 
-interface ConfettiProps {
-  count?: number;
-}
-
 /** One burst from the top centre on mount. Decorative, so it renders nothing under reduced motion. */
-export function Confetti({ count = DEFAULT_COUNT }: ConfettiProps) {
+export function Confetti() {
   const reduceMotion = useReducedMotion();
   // Random values are drawn once, not on every render.
-  const [pieces] = useState(() => createPieces(count));
+  const [pieces] = useState(createPieces);
   const progress = useSharedValue(0);
 
   useEffect(() => {

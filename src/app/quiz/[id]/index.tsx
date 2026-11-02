@@ -1,6 +1,6 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { type ComponentProps, useReducer, useRef } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { type ComponentProps, useEffect, useReducer, useRef } from 'react';
+import { Alert, BackHandler, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInRight, SlideInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -25,7 +25,6 @@ type OptionState = ComponentProps<typeof OptionCard>['state'];
 
 export default function QuizScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const router = useRouter();
   const status = useNodeStatus(id);
   const questions = findQuiz(content, id)?.quiz.questions;
 
@@ -42,9 +41,9 @@ export default function QuizScreen() {
   if (status === 'locked') {
     return (
       <Notice
-        title={mn.quiz.lockedMessage}
+        title={mn.home.lockedQuizToast}
         actionLabel={mn.common.back}
-        onAction={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+        onAction={() => router.back()}
       />
     );
   }
@@ -69,7 +68,6 @@ function Notice({
 }
 
 function QuizPlayer({ quizId, questions }: { quizId: string; questions: Question[] }) {
-  const router = useRouter();
   const submitQuiz = useProgressStore((s) => s.submitQuiz);
   const [session, dispatch] = useReducer(quizSessionReducer, initialQuizSession);
   const submitted = useRef(false);
@@ -106,6 +104,7 @@ function QuizPlayer({ quizId, questions }: { quizId: string; questions: Question
         passed: r.passed ? '1' : '0',
         xp: String(r.xpGained),
         unlockedUnit: r.unlocked ? String(r.unlocked.unitNumber) : '',
+        level: r.leveledUp ? String(r.level) : '',
         courseCompleted: r.courseCompleted ? '1' : '0',
       },
     });
@@ -121,6 +120,15 @@ function QuizPlayer({ quizId, questions }: { quizId: string; questions: Question
       { text: mn.quiz.exitConfirm, style: 'destructive', onPress: () => router.back() },
     ]);
   };
+
+  // Android's back button gets the same confirmation as the close button.
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      close();
+      return true;
+    });
+    return () => subscription.remove();
+  });
 
   const action = !session.checked
     ? { label: mn.quiz.check, onPress: check }

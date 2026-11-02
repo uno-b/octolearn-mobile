@@ -2,7 +2,7 @@ import { useEventListener } from 'expo';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useVideoPlayer, VideoView, type VideoPlayer } from 'expo-video';
 import { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -27,6 +27,8 @@ import { colors, space } from '@/theme';
 
 const VIDEO_ASPECT = 16 / 9;
 const META_ICON = 16;
+// A landscape-only player inside a portrait-only app can throw on iOS, which is untested here.
+const FULLSCREEN_ORIENTATION = Platform.OS === 'android' ? 'landscape' : 'default';
 
 export default function LessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -138,7 +140,7 @@ function LessonVideo({ lesson, player }: { lesson: Lesson; player: VideoPlayer }
         player={player}
         nativeControls
         contentFit="contain"
-        fullscreenOptions={{ enable: true, orientation: 'landscape' }}
+        fullscreenOptions={{ enable: true, orientation: FULLSCREEN_ORIENTATION }}
         style={StyleSheet.absoluteFill}
       />
       {phase === 'loading' ? (

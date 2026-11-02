@@ -2,11 +2,10 @@ import { Tabs } from 'expo-router';
 
 import { Icon, type IconName } from '@/components/Icon';
 import { mn } from '@/i18n/mn';
-import { colors, fonts } from '@/theme';
+import { colors, fonts, type } from '@/theme';
 
 const ACTIVE_TINT = colors.primaryDark;
 const INACTIVE_TINT = colors.lockedIcon;
-const TAB_LABEL_SIZE = 12;
 
 function tabIcon(active: IconName, inactive: IconName) {
   return function TabIcon({ focused, size }: { focused: boolean; size: number }) {
@@ -30,7 +29,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: ACTIVE_TINT,
         tabBarInactiveTintColor: INACTIVE_TINT,
         tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border },
-        tabBarLabelStyle: { fontFamily: fonts.semibold, fontSize: TAB_LABEL_SIZE },
+        tabBarLabelStyle: { fontFamily: fonts.semibold, fontSize: type.micro.fontSize },
         sceneStyle: { backgroundColor: colors.bg },
       }}
     >

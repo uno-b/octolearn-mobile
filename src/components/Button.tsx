@@ -1,4 +1,4 @@
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, radius, size, space } from '@/theme';
 
@@ -6,24 +6,21 @@ import { AppText } from './AppText';
 import { ChunkyFace } from './ChunkyFace';
 import { Icon, type IconName } from './Icon';
 
-type Variant = 'primary' | 'outline' | 'ghost' | 'danger';
+type Variant = 'primary' | 'outline' | 'danger';
 
 interface ButtonProps {
   label: string;
   onPress: () => void;
   variant?: Variant;
   disabled?: boolean;
-  loading?: boolean;
   icon?: IconName;
 }
 
 interface Look {
   face: string;
-  /** Flat looks (ghost, disabled) have no edge and do not sink. */
+  /** The disabled look has no edge and does not sink. */
   edge?: string;
   border?: string;
-  /** Flat looks have no edge to sink into, so they tint instead. */
-  pressedFace?: string;
   label: string;
 }
 
@@ -37,7 +34,6 @@ const LOOKS: Record<Variant, Look> = {
     border: colors.borderStrong,
     label: colors.primaryDark,
   },
-  ghost: { face: 'transparent', pressedFace: colors.primaryTint, label: colors.primaryDark },
   danger: {
     face: colors.surface,
     edge: colors.borderStrong,
@@ -53,18 +49,16 @@ export function Button({
   onPress,
   variant = 'primary',
   disabled = false,
-  loading = false,
   icon,
 }: ButtonProps) {
   const look = disabled ? DISABLED_LOOK : LOOKS[variant];
-  const inactive = disabled || loading;
 
   return (
     <Pressable
       onPress={onPress}
-      disabled={inactive}
+      disabled={disabled}
       accessibilityRole="button"
-      accessibilityState={{ disabled: inactive, busy: loading }}
+      accessibilityState={{ disabled }}
       style={styles.root}
     >
       {({ pressed }) => (
@@ -74,26 +68,22 @@ export function Button({
           radius={radius.btn}
           style={[
             styles.face,
-            { backgroundColor: (pressed && look.pressedFace) || look.face },
+            { backgroundColor: look.face },
             look.border !== undefined && { borderWidth: BORDER_WIDTH, borderColor: look.border },
           ]}
         >
-          {loading ? (
-            <ActivityIndicator color={look.label} />
-          ) : (
-            <View style={styles.content}>
-              {icon ? <Icon name={icon} color={look.label} /> : null}
-              <AppText
-                variant="headline"
-                color={look.label}
-                numberOfLines={1}
-                adjustsFontSizeToFit
-                style={styles.label}
-              >
-                {label}
-              </AppText>
-            </View>
-          )}
+          <View style={styles.content}>
+            {icon ? <Icon name={icon} color={look.label} /> : null}
+            <AppText
+              variant="headline"
+              color={look.label}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              style={styles.label}
+            >
+              {label}
+            </AppText>
+          </View>
         </ChunkyFace>
       )}
     </Pressable>

@@ -1,13 +1,6 @@
 import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -28,8 +21,6 @@ const LOGO_SIZE = 112;
 const LOGO_IMAGE_SIZE = 88;
 const LOGO_BOB = 6;
 const LOGO_BOB_MS = 1200;
-const WORDMARK_SIZE = 32;
-const WORDMARK_LINE = 40;
 const NAME_MAX_LENGTH = 20;
 const INPUT_BORDER = 2;
 
@@ -47,18 +38,15 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.screen}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={styles.screen}
-      >
+      <KeyboardAvoidingView behavior="padding" style={styles.screen}>
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <Logo />
           <View style={styles.wordmark}>
-            <AppText variant="display" color={colors.coralText} style={styles.wordmarkText}>
-              Octo
+            <AppText variant="display" color={colors.coralText}>
+              {mn.login.brandFirst}
             </AppText>
-            <AppText variant="display" color={colors.primaryDark} style={styles.wordmarkText}>
-              Learn
+            <AppText variant="display" color={colors.primaryDark}>
+              {mn.login.brandSecond}
             </AppText>
           </View>
           <AppText color={colors.textSec} align="center">
@@ -122,14 +110,13 @@ const styles = StyleSheet.create({
   logo: {
     width: LOGO_SIZE,
     height: LOGO_SIZE,
-    borderRadius: LOGO_SIZE / 2,
+    borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.primaryTint,
   },
   logoImage: { width: LOGO_IMAGE_SIZE, height: LOGO_IMAGE_SIZE },
   wordmark: { flexDirection: 'row' },
-  wordmarkText: { fontSize: WORDMARK_SIZE, lineHeight: WORDMARK_LINE },
   form: { alignSelf: 'stretch', gap: space.sm, marginTop: space.xl },
   input: {
     ...type.headline,

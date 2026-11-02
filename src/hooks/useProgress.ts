@@ -13,8 +13,10 @@ export function usePath(): CoursePath {
 }
 
 export function useStats(): ProfileStats {
+  // The React Compiler would cache today's date for the component's lifetime, which would freeze
+  // the streak and chart on yesterday when the app stays open past midnight.
+  'use no memo';
   const progress = useProgressStore((s) => s.progress);
-  // A dependency, so stats computed before midnight are not reused after it.
   const today = toDayKey(new Date());
   return useMemo(() => getProfileStats(content, progress, today), [progress, today]);
 }

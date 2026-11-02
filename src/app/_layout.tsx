@@ -55,7 +55,7 @@ export default function RootLayout() {
           <Stack.Screen name="quiz/[id]/result" options={successScreen} />
         </Stack.Protected>
         <Stack.Protected guard={!signedIn}>
-          <Stack.Screen name="login" options={{ animation: 'fade' }} />
+          <Stack.Screen name="login" options={{ animation: 'fade_from_bottom' }} />
         </Stack.Protected>
       </Stack>
     </>

@@ -1,9 +1,10 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Celebration } from '@/components/Celebration';
+import { Pill } from '@/components/Pill';
 import { StateView } from '@/components/StateView';
 import { content } from '@/content';
 import { findQuiz } from '@/domain/path';
@@ -20,11 +21,11 @@ type ResultParams = {
   xp: string;
   unlockedUnit: string;
   courseCompleted: string;
+  level: string;
 };
 
 export default function QuizResultScreen() {
   const params = useLocalSearchParams<ResultParams>();
-  const router = useRouter();
   const location = findQuiz(content, params.id);
 
   if (!location) {
@@ -43,7 +44,6 @@ export default function QuizResultScreen() {
   return (
     <Result
       quizId={params.id}
-      unitNumber={location.unitNumber}
       passPercent={location.quiz.passPercent}
       correct={Number(params.correct)}
       total={Number(params.total)}
@@ -53,13 +53,13 @@ export default function QuizResultScreen() {
       // An empty param means nothing was unlocked, e.g. a retake of a passed quiz.
       unlockedUnit={params.unlockedUnit ? Number(params.unlockedUnit) : null}
       courseCompleted={params.courseCompleted === '1'}
+      level={params.level ? Number(params.level) : null}
     />
   );
 }
 
 interface ResultProps {
   quizId: string;
-  unitNumber: number;
   passPercent: number;
   correct: number;
   total: number;
@@ -68,11 +68,11 @@ interface ResultProps {
   xp: number;
   unlockedUnit: number | null;
   courseCompleted: boolean;
+  level: number | null;
 }
 
 function Result({
   quizId,
-  unitNumber,
   passPercent,
   correct,
   total,
@@ -81,17 +81,15 @@ function Result({
   xp,
   unlockedUnit,
   courseCompleted,
+  level,
 }: ResultProps) {
-  const router = useRouter();
-
   useEffect(() => {
     if (passed) haptics.success();
     else haptics.error();
   }, [passed]);
 
-  const goOn = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const retake = () => router.replace({ pathname: '/quiz/[id]', params: { id: quizId } });
-  const continueAction = { label: mn.common.continue, onPress: goOn };
+  const continueAction = { label: mn.common.continue, onPress: () => router.back() };
   const retakeAction = { label: mn.quiz.retake, onPress: retake };
 
   if (!passed) {
@@ -111,9 +109,7 @@ function Result({
 
   let subtitle = mn.quiz.passSubRetake(percent);
   if (courseCompleted) subtitle = mn.quiz.passSubLast(percent);
-  else if (unlockedUnit !== null && unlockedUnit !== unitNumber) {
-    subtitle = mn.quiz.passSub(percent, unlockedUnit);
-  }
+  else if (unlockedUnit !== null) subtitle = mn.quiz.passSub(percent, unlockedUnit);
 
   return (
     <Celebration
@@ -125,6 +121,7 @@ function Result({
       subtitle={subtitle}
       xp={xp}
       confetti
+      extra={level ? <Pill tone="gold" label={mn.common.levelUp(level)} /> : undefined}
       primary={continueAction}
       secondary={retakeAction}
     />
