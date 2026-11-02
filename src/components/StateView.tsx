@@ -70,7 +70,8 @@ export function StateView({
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
+    // Grows to fill a sized parent, and keeps its content height in an auto-height one.
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: space.md,

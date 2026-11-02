@@ -17,6 +17,8 @@ SplashScreen.preventAutoHideAsync();
 export const unstable_settings = { anchor: '(tabs)' };
 
 const noGesture = { gestureEnabled: false };
+// A plain fade makes both screens transparent mid-way on Android, which flashes the window.
+const successScreen = { animation: 'fade_from_bottom', ...noGesture } as const;
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -45,12 +47,12 @@ export default function RootLayout() {
         <Stack.Protected guard={signedIn}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="lesson/[id]/index" />
-          <Stack.Screen name="lesson/[id]/done" options={{ animation: 'fade', ...noGesture }} />
+          <Stack.Screen name="lesson/[id]/done" options={successScreen} />
           <Stack.Screen
             name="quiz/[id]/index"
             options={{ animation: 'slide_from_bottom', ...noGesture }}
           />
-          <Stack.Screen name="quiz/[id]/result" options={{ animation: 'fade', ...noGesture }} />
+          <Stack.Screen name="quiz/[id]/result" options={successScreen} />
         </Stack.Protected>
         <Stack.Protected guard={!signedIn}>
           <Stack.Screen name="login" options={{ animation: 'fade' }} />

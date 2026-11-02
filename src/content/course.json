@@ -1,6 +1,12 @@
 {
-  "course": { "id": "eng-a1", "title": "Англи хэл — Анхан шат" },
-  "user": { "name": "Болд", "avatarUrl": null },
+  "course": {
+    "id": "eng-a1",
+    "title": "Англи хэл — Анхан шат"
+  },
+  "user": {
+    "name": "Болд",
+    "avatarUrl": null
+  },
   "units": [
     {
       "id": "u1",
@@ -34,9 +40,9 @@
           "id": "u1-l4",
           "title": "Тоо 1–10",
           "description": "Нэгээс арав хүртэлх тоог англиар зөв дуудаж сурна. Нас, утасны дугаараа хэлэхдээ эдгээр тоог ашиглана.",
-          "videoUrl": "https://media.w3.org/2010/05/bunny/trailer.mp4",
-          "fallbackUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
-          "durationSec": 33
+          "videoUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4",
+          "durationSec": 30
         },
         {
           "id": "u1-l5",
@@ -92,9 +98,9 @@
           "id": "u2-l1",
           "title": "Гэр бүл",
           "description": "Гэр бүлийн гишүүдийг англиар нэрлэж сурна. Аав, ээж, ах дүүгийнхээ тухай энгийн өгүүлбэрээр ярина.",
-          "videoUrl": "https://media.w3.org/2010/05/bunny/trailer.mp4",
-          "fallbackUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
-          "durationSec": 33
+          "videoUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4",
+          "durationSec": 30
         },
         {
           "id": "u2-l2",
@@ -174,9 +180,9 @@
           "id": "u3-l1",
           "title": "Чиглэл",
           "description": "Англиар зам асууж, чиглэл тайлбарлаж сурна. Баруун, зүүн, чигээрээ гэх үгсийг зөв хэрэглэнэ.",
-          "videoUrl": "https://media.w3.org/2010/05/bunny/trailer.mp4",
-          "fallbackUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
-          "durationSec": 33
+          "videoUrl": "https://raw.githubusercontent.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4",
+          "fallbackUrl": "https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4",
+          "durationSec": 30
         },
         {
           "id": "u3-l2",

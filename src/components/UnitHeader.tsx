@@ -20,7 +20,7 @@ export function UnitHeader({ index, title, locked = false }: UnitHeaderProps) {
 
   if (locked) {
     return (
-      <View accessibilityRole="header" style={[styles.banner, styles.lockedBanner]}>
+      <View accessible accessibilityRole="header" style={[styles.banner, styles.lockedBanner]}>
         <View style={styles.text}>
           <AppText variant="micro" color={colors.textMuted}>
             {eyebrow}
@@ -38,7 +38,7 @@ export function UnitHeader({ index, title, locked = false }: UnitHeaderProps) {
   }
 
   return (
-    <View accessibilityRole="header" style={[styles.banner, styles.unlockedBanner]}>
+    <View accessible accessibilityRole="header" style={[styles.banner, styles.unlockedBanner]}>
       <View style={styles.text}>
         <AppText variant="micro" color={colors.onPrimary}>
           {eyebrow}

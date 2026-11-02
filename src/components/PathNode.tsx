@@ -78,7 +78,8 @@ const LOOKS: Record<NodeKind, Record<NodeStatus, Look>> = {
       icon: 'star',
       iconColor: colors.goldDark,
     },
-    locked: LOCKED,
+    // Keeps the star so a locked quiz still reads as a quiz.
+    locked: { ...LOCKED, icon: 'star' },
   },
 };
 
@@ -88,6 +89,8 @@ const HALO_SCALE = 1.35;
 const HALO_OPACITY = 0.45;
 const HALO_PERIOD_MS = 1400;
 const BUBBLE_GAP = 12;
+/** An absolute child of a column is capped to its parent's width, which would cut the label off. */
+const BUBBLE_SLOT_WIDTH = 120;
 const BUBBLE_CHEVRON = 16;
 const ARROW_SIZE = 10;
 
@@ -199,7 +202,9 @@ function StartBubble({ diameter, side, onPress }: StartBubbleProps) {
       style={[
         styles.bubbleSlot,
         { height: diameter },
-        isRight ? { left: diameter + BUBBLE_GAP } : { right: diameter + BUBBLE_GAP },
+        isRight
+          ? { left: diameter + BUBBLE_GAP, alignItems: 'flex-start' }
+          : { right: diameter + BUBBLE_GAP, alignItems: 'flex-end' },
       ]}
     >
       <Pressable onPress={onPress} hitSlop={space.sm} style={styles.bubble}>
@@ -218,7 +223,12 @@ function StartBubble({ diameter, side, onPress }: StartBubbleProps) {
 const styles = StyleSheet.create({
   coin: { alignItems: 'center', justifyContent: 'center' },
   halo: { position: 'absolute', top: 0, left: 0, borderRadius: radius.pill },
-  bubbleSlot: { position: 'absolute', top: 0, justifyContent: 'center' },
+  bubbleSlot: {
+    position: 'absolute',
+    top: 0,
+    width: BUBBLE_SLOT_WIDTH,
+    justifyContent: 'center',
+  },
   bubble: {
     flexDirection: 'row',
     alignItems: 'center',

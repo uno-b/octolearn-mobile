@@ -80,6 +80,7 @@ export const mn = {
   profile: {
     levelSince: (level: number, year: string, month: number) =>
       `Түвшин ${level} · ${year} оны ${month}-р сараас хойш`,
+    levelXp: (done: number, total: number) => `${done} / ${total} XP`,
     totalXp: 'Нийт XP',
     streak: 'Streak',
     days: (n: number) => `${n} өдөр`,

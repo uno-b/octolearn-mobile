@@ -57,7 +57,6 @@ export function Pill({ tone, icon, label, bumpKey, accessibilityLabel }: PillPro
 
 const styles = StyleSheet.create({
   pill: {
-    alignSelf: 'flex-start',
     height: PILL_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
