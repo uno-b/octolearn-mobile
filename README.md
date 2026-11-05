@@ -75,6 +75,10 @@ src/
 | P2     | Сүлжээ тасрах үеийн зохицуулалт: алдааны дэлгэц, дахин оролдох, нөөц видео холбоос |
 | P2     | Цэвэр архитектур, state management (Zustand)                                       |
 
+## AI хэрэглээ
+
+Хөгжүүлэлтийг голчлон Claude Code ашиглан хийсэн.
+
 ## Эх сурвалж ба лиценз
 
 - Video: [Sintel](https://durian.blender.org/) ба [Big Buck Bunny](https://peach.blender.org/) (Blender Foundation, CC BY), [test-videos.co.uk](https://test-videos.co.uk/), [samplelib.com](https://samplelib.com/), ExoPlayer-ийн тестийн бичлэг.
